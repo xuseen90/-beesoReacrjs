@@ -1,27 +1,32 @@
 import React, { useContext, useState } from 'react'
-import logo from '../img/logo.png'
-import cancel from '../img/close.svg'
+
 import { Link } from 'react-router-dom'
 import { BsCartFill } from 'react-icons/bs'
 import { CartContext } from '../Context/CartContext'
 import { StoreContext } from '../Context/StoreContext'
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false)
-
   const { itemAmount } = useContext(CartContext)
   const { store } = useContext(StoreContext)
 
+  const [isActive, setIsActive] = useState(false)
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      window.scrollY > 60 ? setIsActive(true) : setIsActive(false)
+    })
+  })
+
   return (
     <>
-      <nav className='bg-black text-white border-gray-200 dark:bg-gray-900'>
+      <nav
+        className={`${
+          isActive && 'bg-black'
+        } bg-black text-white w-full z-10 fixed`}
+      >
         <div className=' relative container  w-[80%] flex items-center justify-between mx-auto p-4'>
           <div className='flex items-center'>
-            <img
-              src={store.business_logo}
-              className='h-8'
-              alt='beeso Logo'
-            />
+            <img src={store.business_logo} className='h-8' alt='beeso Logo' />
             <span className='self-center flex text-sm md:text-xl font-semibold whitespace-nowrap dark:text-white'>
               {store.business_name}
             </span>
